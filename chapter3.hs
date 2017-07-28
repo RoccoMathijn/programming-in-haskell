@@ -50,7 +50,7 @@ pair x y = (x,y)
 -- :type pair
 -- pair :: t1 -> t -> (t1, t)
 
-double x = x*2
+double x = x * 2
 -- :type double
 -- double :: Num a => a -> a
 
