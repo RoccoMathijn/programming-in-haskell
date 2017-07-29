@@ -3,7 +3,7 @@ import Prelude hiding (all, any, takeWhile, dropWhile, map, filter, curry, uncur
 import Data.Char
 
 -- 1.
--- map f (filter p xs)
+exercise1 f p xs = map f (filter p xs)
 
 -- 2.
 -- a.
@@ -74,19 +74,39 @@ int2bin n = n `mod` 2 : int2bin (n `div` 2)
 make8 :: [Bit] -> [Bit]
 make8 bits = take 8 (bits ++ repeat 0)
 
+addParity :: [Bit] -> [Bit]
+addParity bits =  parityBit : bits
+                  where parityBit = if oddOnes bits then 1 else 0
+
+oddOnes :: [Bit] -> Bool
+oddOnes bits = length ones `mod` 2 /= 0
+             where ones = filter (==1) bits
+
 encode :: String -> [Bit]
-encode = concat . map (make8 . int2bin . ord)
+encode = concat . map (addParity . make8 . int2bin . ord)
 
 chop8 :: [Bit] -> [[Bit]]
 chop8 [] = []
 chop8 bits = take 8 bits : chop8 (drop 8 bits)
 
+chop9 :: [Bit] -> [[Bit]]
+chop9 [] = []
+chop9 bits = take 9 bits : chop9 (drop 9 bits)
+
+checkParity :: [Bit] -> [Bit]
+checkParity (parityBit:xs) = case (oddOnes xs, parityBit) of
+                               (True, 1)  -> xs 
+                               (False, 0) -> xs
+                               (_, _)     -> error "Your data was corrupted"  
+
 decode :: [Bit] -> String
-decode = map (chr . bin2int) . chop8
+decode bits = map (chr . bin2int) (map checkParity (chop9 bits))
 
 transmit :: String -> String
-transmit = decode . channel . encode
+transmit = decode . corruptChannel . encode
 
 channel :: [Bit] -> [Bit]
 channel = id
 
+corruptChannel :: [Bit] -> [Bit]
+corruptChannel = tail
