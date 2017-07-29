@@ -51,8 +51,8 @@ uncurry f (x, y) = f x y
 unfold p h t x  | p x = []
                 | otherwise = h x : unfold p h t (t x)
 
-chop8 :: [Bit] -> [[Bit]]
-chop8 = unfold (==[]) (take 8) (drop 8)
+chop8' :: [Bit] -> [[Bit]]
+chop8' = unfold (==[]) (take 8) (drop 8)
 
 map' :: (a -> b) -> [a] -> [b]
 map' f = unfold (null) (f.head) (tail)
