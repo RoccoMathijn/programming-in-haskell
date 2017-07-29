@@ -110,3 +110,17 @@ channel = id
 
 corruptChannel :: [Bit] -> [Bit]
 corruptChannel = tail
+
+-- 9.
+altMap :: (a -> b) -> (a -> b) -> [a] -> [b]
+altMap _ _ [] = []
+altMap f g (x:xs) = f x : altMap g f xs 
+
+-- 10.
+luhnDouble :: Int -> Int
+luhnDouble i =  if res > 9 then res - 9 else res
+                where res = i * 2
+
+luhn :: [Int] -> Bool
+luhn xs = if total `mod` 10 == 0 then True else False 
+          where total = sum (altMap id luhnDouble (reverse xs))
