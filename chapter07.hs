@@ -61,7 +61,6 @@ iterate' :: (a -> a) -> a -> [a]
 iterate' f = unfold (\x -> False) (f) (f)
 
 -- 7.
--- to be continued
 type Bit = Int
 
 bin2int :: [Bit] -> Int
@@ -80,7 +79,7 @@ addParity bits =  parityBit : bits
 
 oddOnes :: [Bit] -> Bool
 oddOnes bits = length ones `mod` 2 /= 0
-             where ones = filter (==1) bits
+               where ones = filter (==1) bits
 
 encode :: String -> [Bit]
 encode = concat . map (addParity . make8 . int2bin . ord)
@@ -102,6 +101,7 @@ checkParity (parityBit:xs) = case (oddOnes xs, parityBit) of
 decode :: [Bit] -> String
 decode bits = map (chr . bin2int) (map checkParity (chop9 bits))
 
+-- 8.
 transmit :: String -> String
 transmit = decode . corruptChannel . encode
 
