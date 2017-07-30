@@ -43,6 +43,7 @@ balance :: [a] -> BTree a
 balance [x] = Leaf x
 balance xs = Node (balance (fst (halves xs))) (balance (snd (halves xs)))
 
+-- 5.
 data Expr = Val Int | Add Expr Expr
 
 folde :: (Int -> a) -> (a -> a -> a) -> Expr -> a
@@ -50,12 +51,11 @@ folde f g e = case e of
               Val x   -> f x
               Add x y -> g (folde f g x) (folde f g y)
 
+-- 6.
 eval :: Expr -> Int
 eval e = folde (\x -> x) (\x y -> x + y) e
 
-e :: Expr
-e = Add (Add (Val 1) (Val 2)) (Val 1)
-
+-- 7.
 instance Eq a => Eq (Maybe a) where
 Just x    == Just y     = x == y
 Nothing   == Nothing    = True
