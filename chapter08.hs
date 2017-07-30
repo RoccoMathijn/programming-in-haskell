@@ -88,7 +88,7 @@ eval s (Var x)      = find x s
 eval s (Not p)      = not (eval s p)
 eval s (And p q)    = eval s p && eval s q
 eval s (Imply p q)  = eval s p <= eval s q
-eval s (Disj p q)   = not (eval s p) && not (eval s q)
+eval s (Or p q)     = eval s p || eval s q
 eval s (Eq p q)     = eval s p == eval s q
 
 vars :: Prop -> [Char]
@@ -97,6 +97,8 @@ vars (Var x)     = [x]
 vars (Not p)     = vars p
 vars (And p q)   = vars p ++ vars q
 vars (Imply p q) = vars p ++ vars q
+vars (Or p q)    = vars p ++ vars q
+vars (Eq p q)    = vars p ++ vars q
 
 bools :: Int -> [[Bool]]
 bools 0 = [[]]
@@ -113,3 +115,6 @@ subst p = map (zip vs) (bools (length vs))
 
 isTaut :: Prop -> Bool
 isTaut p = and [eval s p | s <- subst p]
+
+-- 9.
+--
