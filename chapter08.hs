@@ -24,15 +24,15 @@ occurs x (Node l y r)  = case compare x y of
 -- The new definition only requires one comparison of x and y per node
 
 -- 3.
-data BTree a = Leaf a | Node (BTree a) (BTree a)
+data BTree a = BLeaf a | BNode (BTree a) (BTree a)
 
 leaves :: BTree a -> Int
-leaves (Leaf _)    = 1
-leaves (Node l r)  = (count l) + (count r)
+leaves (BLeaf _)    = 1
+leaves (BNode l r)  = (count l) + (count r)
 
 balanced :: BTree a -> Bool
-balanced (Leaf y)   = True
-balanced (Node l r) = abs (leaves l - leaves r) <= 1 && balanced l && balanced r
+balanced (BLeaf y)   = True
+balanced (BNode l r) = abs (leaves l - leaves r) <= 1 && balanced l && balanced r
 
 halves :: [a] -> ([a],[a])
 halves list = (take half list, drop half list)
@@ -56,12 +56,12 @@ eval :: Expr -> Int
 eval e = folde (\x -> x) (\x y -> x + y) e
 
 -- 7.
-instance Eq a => Eq (Maybe a) where
-Just x    == Just y     = x == y
-Nothing   == Nothing    = True
-_         == _          = False
+--instance Eq a => Eq (Maybe a) where
+--  Just x    == Just y     = x == y
+--  Nothing   == Nothing    = True
+--  _         == _          = False
 
-instance Eq a => Eq [a] where
-[] == [] = True
-(x:xs) == (y:ys) = x == y && xs == ys
-_ == _ = False
+--instance Eq a => Eq [a] where
+--  [] == [] = True
+--  (x:xs) == (y:ys) = x == y && xs == ys
+--  _ == _ = False
