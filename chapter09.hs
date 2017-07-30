@@ -1,13 +1,12 @@
 module Chapter9 where
 
-data Op = Add | Sub | Mul | Div | Pow
+data Op = Add | Sub | Mul | Div
 
 instance Show Op where
   show Add = "+"
   show Sub = "-"
   show Mul = "*"
   show Div = "/"
-  show Pow = "^"
 
 data Expr = Val Int | App Op Expr Expr
 
@@ -23,14 +22,12 @@ valid Add x y = x <= y
 valid Sub x y = x > y
 valid Mul x y = x /= 1 && y /= 1 && x <= y
 valid Div x y = y /=0 && y /= 1 && x `mod` y == 0
-valid Pow x y = x <= y && y >= 0
 
 apply :: Op -> Int -> Int -> Int
 apply Add x y = x + y
 apply Sub x y = x - y
 apply Mul x y = x * y
 apply Div x y = x `div` y
---apply Pow x y = x ^ y
 
 values :: Expr -> [Int]
 values (Val n) = [n]
@@ -58,23 +55,6 @@ perms (x:xs) = concat (map (interleave x) (perms xs))
 choices :: [a] -> [[a]]
 choices = concat . map perms . subs
 
--- 1.
-choices' :: [a] -> [[a]]
-choices' xs = [zs | ys <- subs xs, zs <- perms ys]
-
--- 2.
-isChoice :: Eq a => [a] -> [a] -> Bool
-
-isChoice (x:xs) (y:ys)  = elem x ys && isChoice xs (removeFirst x ys)
-
-removeFirst :: Eq a => a -> [a] -> [a]
-removeFirst _ [] = []
-removeFirst x (y:ys)  | x == y = ys
-                      | otherwise = y : removeFirst x ys
-
-solution :: Expr -> [Int] -> Int -> Bool
-solution e ns n = elem (values e) (choices ns) && eval e == [n]
-
 split :: [a] -> [([a],[a])]
 split [] = []
 split [_] = []
@@ -87,12 +67,26 @@ exprs ns = [e | (ls,rs) <- split ns,
                 l <- exprs ls,
                 r <- exprs rs,
                 e <- combine l r]
-
+                                               
 combine :: Expr -> Expr -> [Expr]
 combine l r = [App o l r | o <- ops]
 
 ops :: [Op]
-ops = [Add, Sub, Mul, Div] -- Pow]
+ops = [Add, Sub, Mul, Div]
+
+-- 1.
+choices' :: [a] -> [[a]]
+choices' xs = [zs | ys <- subs xs, zs <- perms ys]
+
+-- 2.
+isChoice :: Eq a => [a] -> [a] -> Bool
+isChoice (x:xs) (y:ys)  = elem x ys && isChoice xs (removeFirst x ys)
+
+removeFirst :: Eq a => a -> [a] -> [a]
+removeFirst _ [] = []
+removeFirst x (y:ys)  | x == y = ys
+                      | otherwise = y : removeFirst x ys
+
 -- 3.
 -- solutions won't terminate
 
@@ -120,11 +114,11 @@ numberOfSuccessfullExpressions = length . successfullExpr
 --4672540
 
 -- 5.
-valid :: Op -> Int -> Int -> Bool
-valid Add _ _ = True
-valid Sub x y = True 
-valid Mul _ _ = True
-valid Div x y = y /= 0 && x `mod` y == 0
+--valid :: Op -> Int -> Int -> Bool
+--valid Add _ _ = True
+--valid Sub x y = True 
+--valid Mul _ _ = True
+--valid Div x y = y /= 0 && x `mod` y == 0
 
 --numberOfSuccessfullExpressions [1,3,7,10,25,50]
 --10839369
@@ -146,7 +140,7 @@ valid Div x y = y /= 0 && x `mod` y == 0
 --valid Div x y = y /=0 && y /= 1 && x `mod` y == 0
 --valid Pow x y = x <= y && y >= 0
 
---ops = [Add, Sub, Mul, Div] -- Pow]
+--ops = [Add, Sub, Mul, Div, Pow]
 
 -- b.
 -- c.
