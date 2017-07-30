@@ -28,7 +28,7 @@ data BTree a = BLeaf a | BNode (BTree a) (BTree a)
 
 leaves :: BTree a -> Int
 leaves (BLeaf _)    = 1
-leaves (BNode l r)  = (count l) + (count r)
+leaves (BNode l r)  = (leaves l) + (leaves r)
 
 balanced :: BTree a -> Bool
 balanced (BLeaf y)   = True
@@ -40,8 +40,8 @@ halves list = (take half list, drop half list)
 
 -- 4.
 balance :: [a] -> BTree a
-balance [x] = Leaf x
-balance xs = Node (balance (fst (halves xs))) (balance (snd (halves xs)))
+balance [x] = BLeaf x
+balance xs = BNode (balance (fst (halves xs))) (balance (snd (halves xs)))
 
 -- 5.
 data Expr = Val Int | Add Expr Expr
@@ -65,3 +65,5 @@ eval e = folde (\x -> x) (\x y -> x + y) e
 --  [] == [] = True
 --  (x:xs) == (y:ys) = x == y && xs == ys
 --  _ == _ = False
+
+
