@@ -44,3 +44,26 @@ instance Applicative ZipList where
   -- <*> :: f (a -> b) -> f a -> f b
   -- <*> :: ZipList (a -> b) -> ZipList a -> ZipList b
   (Z gs) <*> (Z hs) = Z [g h | (g, h) <- zip gs hs] 
+
+-- 6.
+-- instance Monad ((-> p)) where
+--   -- (>>=) :: f a -> (a -> f b) -> f b
+--   -- (>>=) :: (->) p a -> (a -> (->) p b) -> (->) p b
+--   -- (>>=) :: (p -> a) -> (a -> (p -> b)) -> (p -> b)
+--   g >>= h = \x -> h (g x) x
+
+-- 7.
+data Expr a = Var a | Val Int | Add (Expr a) (Expr a)
+              deriving Show
+
+instance Functor Expr where
+  -- fmap :: (a -> b) -> f a -> f b
+  -- fmap :: (a -> b) -> Expr a -> Expr b
+  fmap g (Var x) = Var (g x)
+  fmap _ (Val x) = Val x
+  fmap g (Add x y) = Add (fmap g x) (fmap g y)
+
+-- instance Applicative Expr where
+--   -- pure :: a -> f a
+--   -- pure :: a -> Expr a
+--   pure
