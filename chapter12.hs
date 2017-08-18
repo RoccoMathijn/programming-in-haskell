@@ -63,7 +63,16 @@ instance Functor Expr where
   fmap _ (Val x) = Val x
   fmap g (Add x y) = Add (fmap g x) (fmap g y)
 
--- instance Applicative Expr where
---   -- pure :: a -> f a
---   -- pure :: a -> Expr a
---   pure
+instance Applicative Expr where
+  -- pure :: a -> f a
+  -- pure :: a -> Expr a
+  pure x = Var x
+
+  -- <*> :: f (a -> b) -> f a -> f b
+  -- <*> :: Expr (a -> b) -> Expr a -> Expr b
+  Var g <*> ex = fmap g ex
+
+instance Monad Expr where
+  -- (>>=) :: f a -> (a -> f b) -> f b
+  Var x >>= g = g x
+  Val x >>= _ = Val x
