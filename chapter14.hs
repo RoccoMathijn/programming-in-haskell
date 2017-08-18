@@ -1,6 +1,5 @@
 module Chapter14 where
 
-
 -- 1. 
 -- instance (Monoid a, Monoid b) => Monoid (a,b) where
 --   --mempty :: (a,b)
@@ -30,5 +29,7 @@ instance Foldable Maybe where
   foldl g v (Just x) = g v x 
 
 instance Traversable Maybe where
-  -- traverse :: Applicative f => 
-
+  -- traverse :: Applicative f => (a -> f b) -> t a -> f (t b)
+  -- traverse :: Applicative f => (a -> f b) -> Maybe a -> f (Maybe b)
+  traverse _ Nothing  = pure Nothing
+  traverse g (Just x) = fmap Just (g x)
