@@ -74,8 +74,9 @@ instance Applicative Expr where
 
 instance Monad Expr where
   -- (>>=) :: f a -> (a -> f b) -> f b
-  Var x >>= g = g x
-  Val x >>= _ = Val x
+  Var x   >>= g = g x
+  Val x   >>= _ = Val x
+  Add x y >>= g = Add (x >>= g) (y >>= g)
 
 -- 8.
 type State = Int
