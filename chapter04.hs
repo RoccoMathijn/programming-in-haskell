@@ -66,6 +66,6 @@ luhnDouble i =  if res > 9 then res - 9 else res
                 where res = i * 2
 
 luhn :: Int -> Int -> Int -> Int -> Bool
-luhn w x y z =  if total `mod` 10 == 0 then True else False
+luhn w x y z =  total `mod` 10 == 0
                 where total = (luhnDouble w) + x + (luhnDouble y) + z
 
