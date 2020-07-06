@@ -28,7 +28,7 @@ perfect :: Int -> [Int]
 perfect n = [x | x <- [1..n], (sum (factors x)) - x  == x]
 
 -- 7.
-exercise7 = concat [[(x,y) | x <- [1,2]] | y <- [3,4]]
+exercise7 = concat [[(x,y) | y <- [3,4]] | x <- [1,2]]
 
 -- 8.
 find :: Eq a => a -> [(a,b)] -> [b]
