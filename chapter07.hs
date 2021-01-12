@@ -58,7 +58,7 @@ map' :: (a -> b) -> [a] -> [b]
 map' f = unfold (null) (f.head) (tail)
 
 iterate' :: (a -> a) -> a -> [a]
-iterate' f = unfold (\x -> False) (f) (f)
+iterate' f = unfold (\x -> False) (id) (f)
 
 -- 7.
 type Bit = Int
