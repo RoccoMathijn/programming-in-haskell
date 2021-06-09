@@ -57,7 +57,7 @@ instance Foldable Tree where
   --foldl   :: (a -> b -> a) -> a -> t b -> a
   --foldl   :: (a -> b -> a) -> a -> Tree b -> a
   foldl _ a Leaf         = a
-  foldl g a (Node l v r) = foldl g (foldl g (g a v) r) r
+  foldl g a (Node l v r) = foldl g (foldl g (g a v) l) r
 
 
 
